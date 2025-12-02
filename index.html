@@ -150,6 +150,50 @@
 
   /* Minor polish */
   small.muted{color:var(--muted);font-size:13px}
+  /* ===============================
+   FIX NAVBAR MOBILE + DARK MODE
+   =============================== */
+
+/* Tampilan HP / Tablet */
+@media (max-width: 768px) {
+
+  /* Navbar utama */
+  nav {
+    display: flex;
+    flex-direction: column;     /* tumpuk ke bawah */
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    background: #ffffff;        /* background putih */
+    width: 100%;
+  }
+
+  /* Link menu navbar */
+  nav a {
+    color: #111 !important;     /* teks hitam agar terlihat */
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+}
+
+/* ===============================
+   DARK MODE FIX NAVBAR HP
+   =============================== */
+
+@media (max-width: 768px) {
+
+  /* Navbar dark mode */
+  body.dark nav {
+    background: #111111 !important;   /* background gelap */
+  }
+
+  /* Teks menu dark mode */
+  body.dark nav a {
+    color: #ffffff !important;        /* teks putih */
+  }
+}
+
 </style>
 </head>
 <body data-theme="colorful">
@@ -556,3 +600,4 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
+
