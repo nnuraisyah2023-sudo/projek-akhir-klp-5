@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CompanyDesign — Studio Desain & Digital</title>
+<meta name="description" content="CompanyDesign — desain arsitektur, branding, dan pengembangan web. Profesional, modern, dan responsif." />
+
+<!-- Fonts: using system fonts for portability -->
+<style>
+  :root{
+    /* Theme tokens (will be updated per theme) */
+    --bg: #0b1220;        /* default dark */
+    --card: #0f1724;
+    --muted: #90a0b6;
+    --text: #e6eefc;
+    --accent: #4f7cff;
+    --accent-2: #7de0d9;
+    --glass: rgba(255,255,255,0.04);
+    --radius: 14px;
+    --maxwidth:1150px;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --transition: 280ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  /* LIGHT (Minimal A) - Toggle by data-theme="light" on body */
+  body[data-theme="light"]{
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --text: #0f1724;
+    --accent: #0f4cff;
+    --accent-2: #0ac7b8;
+    --glass: rgba(15,20,36,0.03);
+  }
+
+  /* COLORFUL (B) */
+  body[data-theme="colorful"]{
+    --bg: linear-gradient(180deg,#f7f9ff 0%, #fff8fb 100%);
+    --card: #ffffff;
+    --muted: #64748b;
+    --text: #0b1220;
+    --accent: #8b5cf6;       /* purple */
+    --accent-2: #06b6d4;     /* cyan */
+    --glass: rgba(11,17,34,0.03);
+  }
+
+  /* Base reset */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transition:background var(--transition), color var(--transition);
+    line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  /* Layout */
+  header{position:sticky;top:0;z-index:60;backdrop-filter: blur(6px);}
+  .topbar{display:flex;align-items:center;gap:16px;padding:14px 18px;max-width:var(--maxwidth);margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800}
+  .logo{width:46px;height:46px;border-radius:10px;display:grid;place-items:center;color:white;
+         background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800}
+  nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+  nav a{padding:8px 12px;border-radius:10px;font-weight:600;color:var(--muted)}
+  nav a.active{background:var(--glass);color:var(--text);box-shadow:0 6px 18px rgba(2,6,23,0.16)}
+
+  /* Theme buttons */
+  .theme-switch{display:flex;gap:8px;margin-left:12px}
+  .tbtn{padding:6px 10px;border-radius:10px;border:0;cursor:pointer;background:transparent;color:var(--muted)}
+  .tbtn.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white}
+
+  /* Main container */
+  .container{max-width:var(--maxwidth);margin:26px auto;padding:0 18px}
+
+  /* HERO */
+  .hero{
+    display:grid;
+    grid-template-columns:1fr 460px;
+    gap:28px;
+    align-items:center;
+    padding:32px 0 14px;
+  }
+  .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:18px;box-shadow:0 12px 36px rgba(2,6,23,0.4)}
+  .hero h1{margin:0;font-size:36px;letter-spacing:-0.4px}
+  .hero p.lead{margin-top:12px;color:var(--muted);font-size:16px}
+  .cta-row{display:flex;gap:12px;margin-top:18px}
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:12px 16px;border-radius:12px;border:0;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(79,124,255,0.14)}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;color:var(--text);cursor:pointer}
+
+  /* Cards grid */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+  .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 8px 30px rgba(2,6,23,0.18);transition:transform .28s ease,box-shadow .28s ease}
+  .card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(2,6,23,0.28)}
+  .muted{color:var(--muted)}
+
+  /* Service list */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:14px}
+
+  /* Feature / Icon */
+  .feature{display:flex;gap:12px;align-items:flex-start}
+  .icon-wrap{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent)}
+
+  /* Slider */
+  .slider{position:relative;overflow:hidden;border-radius:12px}
+  .slides{display:flex;transition:transform .5s cubic-bezier(.2,.9,.3,1)}
+  .slides img{width:100%;height:340px;object-fit:cover}
+  .slide-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:0;padding:10px;border-radius:999px;color:white;cursor:pointer}
+  .prev{left:12px}.next{right:12px}
+  .dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+  .dots button{width:10px;height:10px;border-radius:50%;border:0;background:rgba(255,255,255,0.5);opacity:.5}
+  .dots button.active{opacity:1;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+  /* Stats */
+  .stats{display:flex;gap:18px;align-items:center;margin-top:18px}
+  .stat{background:var(--glass);padding:12px;border-radius:12px;text-align:center;min-width:120px}
+
+  /* Testimonials */
+  .testi-wrap{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:center}
+  .testi{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px}
+  .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover}
+
+  /* CTA large */
+  .cta-hero{margin-top:28px;background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:24px;border-radius:14px;color:white;display:flex;justify-content:space-between;align-items:center}
+
+  /* Footer */
+  footer{margin-top:40px;padding:28px 0;background:transparent;color:var(--muted)}
+
+  /* Responsive */
+  @media(max-width:980px){
+    .hero{grid-template-columns:1fr}
+    .testi-wrap{grid-template-columns:1fr}
+    .grid-3{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:640px){
+    .grid-3{grid-template-columns:1fr}
+    nav{display:none}
+    .topbar{padding:10px}
+  }
+
+  /* Reveal animation helper */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .5s var(--transition), transform .5s var(--transition)}
+  .reveal.show{opacity:1;transform:none}
+
+  /* Minor polish */
+  small.muted{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body data-theme="colorful">
+  <!-- Header / topbar -->
+  <header>
+    <div class="topbar container">
+      <div class="brand">
+        <div class="logo">CD</div>
+        <div>
+          <div style="font-size:16px">CompanyDesign</div>
+          <small class="muted">Design • Branding • Web</small>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="#/" data-route="/" class="navlink">Beranda</a>
+        <a href="#/services" data-route="/services" class="navlink">Layanan</a>
+        <a href="#/gallery" data-route="/gallery" class="navlink">Galeri</a>
+        <a href="#/about" data-route="/about" class="navlink">Tentang</a>
+        <a href="#/contact" data-route="/contact" class="navlink">Kontak</a>
+
+        <div class="theme-switch" role="toolbar" aria-label="Ganti tema">
+          <button class="tbtn" data-theme="light" title="Minimal - Light">A</button>
+          <button class="tbtn active" data-theme="colorful" title="Modern Colorful">B</button>
+          <button class="tbtn" data-theme="dark" title="Dark Mode">C</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <!-- content injected by router -->
+  </main>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <h4>CompanyDesign</h4>
+        <small class="muted">Jl. Anggrek.10 • Tel: 0882-0224-17780</small>
+      </div>
+      <div>
+        <small class="muted">© <span id="thisYear"></span> CompanyDesign — All rights reserved.</small>
+      </div>
+    </div>
+  </footer>
+
+<script>
+/* ========== DATA ========== */
+const DATA = {
+  services:[
+    {id:'s1',title:'Desain Arsitektur',short:'Konsep & gambar kerja profesional.', img:'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?auto=format&fit=crop&w=1200&q=80', desc:'Desain arsitektur modern, 3D & dokumentasi.'},
+    {id:'s2',title:'Branding & Identitas',short:'Logo, panduan gaya & aplikasi brand.', img:'https://images.unsplash.com/photo-1504805572947-34fad45aed93?auto=format&fit=crop&w=1200&q=80', desc:'Identitas merek lengkap & guideline.'},
+    {id:'s3',title:'Pengembangan Web',short:'Website performa & SEO friendly.', img:'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80', desc:'Landing page, company profile, custom dev.'}
+  ],
+  gallery:[
+    'https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1487014679447-9f8336841d58?auto=format&fit=crop&w=1200&q=80'
+  ],
+  testimonials:[
+    {name:'Rina S.',role:'CEO - Startup', text:'Tim CompanyDesign sangat profesional. Desainnya modern & sesuai brief.' , avatar:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80',rating:5},
+    {name:'Adi P.',role:'Founder', text:'Proses cepat, komunikasi lancar, hasil memuaskan.', avatar:'https://images.unsplash.com/photo-1545996124-1e6c7b0b09b0?auto=format&fit=crop&w=256&q=80',rating:5}
+  ]
+};
+
+/* ========== UTILITIES ========== */
+document.getElementById('thisYear').textContent = new Date().getFullYear();
+
+function el(tag,attrs={},html=''){
+  const e=document.createElement(tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]);
+  if(html) e.innerHTML=html;
+  return e;
+}
+
+/* ========== ROUTER ========== */
+const routes = {
+  '/': renderHome,
+  '/services': renderServices,
+  '/gallery': renderGallery,
+  '/about': renderAbout,
+  '/contact': renderContact
+};
+
+function router(){
+  const hash = location.hash.replace('#','') || '/';
+  const path = hash.split('?')[0];
+  // set active nav
+  document.querySelectorAll('nav a').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('data-route')===path);
+  });
+  (routes[path] || render404)();
+  // run reveal observer again after render
+  setTimeout(()=>revealAll(),100);
+}
+
+/* ========== REVEAL (IntersectionObserver) ========== */
+const io = new IntersectionObserver((items)=>{
+  items.forEach(i=>{
+    if(i.isIntersecting){ i.target.classList.add('show'); io.unobserve(i.target); }
+  });
+},{threshold:0.12});
+
+function revealAll(){
+  document.querySelectorAll('.reveal').forEach(n=>{
+    io.observe(n);
+  });
+}
+
+/* ========== SLIDER ========== */
+function initSlider(id='mainSlider', interval=4200){
+  const slider = document.getElementById(id);
+  if(!slider) return;
+  const slides = slider.querySelector('.slides');
+  const imgs = slides.querySelectorAll('img');
+  const dotsWrap = slider.querySelector('.dots');
+  let idx = 0;
+  dotsWrap.innerHTML = '';
+  imgs.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.addEventListener('click',()=>{ idx=i; go(); });
+    dotsWrap.appendChild(b);
+  });
+  const dots = dotsWrap.querySelectorAll('button');
+  function go(){ slides.style.transform = `translateX(${ -idx * 100 }%)`; dots.forEach(d=>d.classList.remove('active')); dots[idx].classList.add('active'); }
+  slider.querySelector('.next').onclick = ()=>{ idx=(idx+1)%imgs.length; go(); };
+  slider.querySelector('.prev').onclick = ()=>{ idx=(idx-1+imgs.length)%imgs.length; go(); };
+  go();
+  return setInterval(()=>{ idx=(idx+1)%imgs.length; go(); }, interval);
+}
+
+/* ========== HOME ========== */
+function renderHome(){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="hero reveal hero-card">
+      <div>
+        <h1>Desain & Digital yang Mendorong Bisnis Anda</h1>
+        <p class="lead">Kami merancang identitas, ruang, dan pengalaman digital profesional — dari strategi hingga implementasi.</p>
+        <div class="cta-row">
+          <button class="btn-primary" id="hireBtn">Minta Proposal</button>
+          <button class="btn-ghost" id="portfolioBtn">Lihat Portofolio</button>
+        </div>
+
+        <div class="grid-3" style="margin-top:18px">
+          <div class="card feature">
+            <div class="icon-wrap">${icon('speed')}</div>
+            <div>
+              <h4 style="margin:0;">Proses Terstruktur</h4>
+              <small class="muted">Riset → Desain → Implementasi</small>
+            </div>
+          </div>
+          <div class="card feature">
+            <div class="icon-wrap">${icon('stars')}</div>
+            <div>
+              <h4 style="margin:0;">Kualitas & Revisi</h4>
+              <small class="muted">Revisi sesuai durasi proyek</small>
+            </div>
+          </div>
+          <div class="card feature">
+            <div class="icon-wrap">${icon('support')}</div>
+            <div>
+              <h4 style="margin:0;">
+              Pendampingan</h4>
+              <small class="muted">Setiap tahap ada komunikasi</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div style="font-weight:300;font-size:20px">120+</div><div class="muted">Proyek</div></div>
+          <div class="stat"><div style="font-weight:300;font-size:20px">75+</div><div class="muted">Klien</div></div>
+          <div class="stat"><div style="font-weight:300;font-size:20px">12</div><div class="muted">Penghargaan</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="border-radius:12px;overflow:hidden" class="reveal">
+          <div style="padding:16px;background:linear-gradient(180deg, rgba(0,0,0,0.04), transparent)">
+            <small class="muted">Project highlight</small>
+            <h3 style="margin:6px 0 12px">Bloryianes — Interior Showcase</h3>
+          </div>
+          <div class="slider" id="mainSlider">
+            <div class="slides">
+              <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1400&q=80" alt="slide1">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="slide2">
+              <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1400&q=80" alt="slide3">
+            </div>
+            <button class="slide-btn prev">‹</button>
+            <button class="slide-btn next">›</button>
+            <div class="dots"></div>
+          </div>
+
+          <div class="muted" style="padding:12px">Proyek terbaru: desain interior & brand untuk klien properti. Fokus pada material & pencahayaan.</div>
+        </div>
+
+        <div style="margin-top:12px" class="reveal card">
+          <h4 style="margin:0 0 8px">Mengapa Memilih Kami?</h4>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></div><small class="muted">Solusi end-to-end</small></div>
+            <div style="display:flex;gap:10px;align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent-2)"></div><small class="muted">Tim berpengalaman</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal" style="margin-top:26px">
+      <h3>Layanan Unggulan</h3>
+      <div class="cards" id="servicesList"></div>
+    </section>
+
+    <section class="reveal" style="margin-top:26px">
+      <h3>Testimoni Klien</h3>
+      <div class="testi-wrap" style="margin-top:12px">
+        <div id="testiCards"></div>
+        <div class="card">
+          <h4>Siap bekerjasama?</h4>
+          <p class="muted">Dapatkan proposal & estimasi biaya dalam 48 jam.</p>
+          <div style="margin-top:12px"><button class="btn-primary" id="contactCta">Hubungi Sekarang</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal" style="margin-top:26px">
+      <h3>Galeri Pilihan</h3>
+      <div class="cards" id="galleryGrid"></div>
+    </section>
+
+    <section class="reveal" style="margin-top:26px">
+      <div class="cta-hero">
+        <div>
+          <h3 style="margin:0">Siap meningkatkan brand & desain bisnis Anda?</h3>
+          <small class="muted">Kirim brief singkat — kami akan siapkan proposal awal.</small>
+        </div>
+        <div><button class="btn-primary" id="finalCta">Minta Proposal</button></div>
+      </div>
+    </section>
+  `;
+
+  // populate services
+  const sl = document.getElementById('servicesList');
+  DATA.services.forEach(s=>{
+    const card = el('div',{class:'card reveal'}, `
+      <img src="${s.img}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px">
+      <h4 style="margin:0 0 6px">${s.title}</h4>
+      <small class="muted">${s.short}</small>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn-primary" data-id="${s.id}">Hubungi</button>
+        <button class="btn-ghost" data-id="${s.id}">Detail</button>
+      </div>
+    `);
+    sl.appendChild(card);
+  });
+
+  // testimonials
+  const twrap = document.getElementById('testiCards');
+  DATA.testimonials.forEach(t=>{
+    const tc = el('div',{class:'testi reveal'},`
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="${t.avatar}" class="avatar" alt="${t.name}">
+        <div>
+          <strong>${t.name}</strong><br><small class="muted">${t.role}</small>
+        </div>
+      </div>
+      <p style="margin-top:12px">${t.text}</p>
+    `);
+    twrap.appendChild(tc);
+  });
+
+  // gallery
+  const g = document.getElementById('galleryGrid');
+  DATA.gallery.forEach(u=>{
+    const gcard = el('div',{class:'card reveal'}, `<img src="${u}" style="height:160px;object-fit:cover;border-radius:8px"><div style="margin-top:8px"><small class="muted">Proyek desain</small></div>`);
+    g.appendChild(gcard);
+  });
+
+  // init slider
+  initSlider('mainSlider', 4200);
+
+  // reveal
+  revealAll();
+
+  // actions
+  document.getElementById('hireBtn').onclick = ()=> location.hash = '#/contact';
+  document.getElementById('portfolioBtn').onclick = ()=> location.hash = '#/gallery';
+  document.getElementById('contactCta').onclick = ()=> location.hash = '#/contact';
+  document.getElementById('finalCta').onclick = ()=> location.hash = '#/contact';
+}
+
+/* ========== OTHER PAGES ========== */
+function renderServices(){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="reveal">
+      <h2>Layanan Kami</h2>
+      <div class="cards" id="servicesAll"></div>
+    </section>
+  `;
+  const container = document.getElementById('servicesAll');
+  DATA.services.forEach(s=>{
+    const c = el('div',{class:'card reveal'}, `
+      <img src="${s.img}" style="height:160px;object-fit:cover;border-radius:8px;margin-bottom:12px">
+      <h4 style="margin:0 0 6px">${s.title}</h4>
+      <small class="muted">${s.short}</small>
+      <p style="margin-top:12px">${s.desc}</p>
+      <div style="margin-top:12px"><button class="btn-primary" data-id="${s.id}">Hubungi Kami</button></div>
+    `);
+    container.appendChild(c);
+  });
+  revealAll();
+}
+
+function renderGallery(){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="reveal">
+      <h2>Galeri Proyek</h2>
+      <div class="cards" id="gall"></div>
+    </section>
+  `;
+  const g = document.getElementById('gall');
+  DATA.gallery.forEach(u=>{
+    g.appendChild(el('div',{class:'card reveal'},`<img src="${u}" style="height:200px;object-fit:cover;border-radius:8px">`));
+  });
+  revealAll();
+}
+
+function renderAbout(){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <section class="reveal card">
+      <h2>Tentang Kami</h2>
+      <p class="muted">CompanyDesign adalah studio kreatif yang menggabungkan desain, brand strategy, dan teknologi untuk membantu bisnis tampil menonjol.</p>
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+        <div class="card"><h4>Visi</h4><small class="muted">Menjadi mitra desain terpercaya.</small></div>
+        <div class="card"><h4>Misi</h4><small class="muted">Memberi solusi kreatif yang berdampak nyata.</small></div>
+      </div>
+    </section>
+  `;
+  revealAll();
+}
+
+function renderContact(){
+  document.getElementById('app').innerHTML = `
+    <section class="reveal card">
+      <h2>Hubungi Kami</h2>
+      <form id="contactForm" style="display:grid;gap:10px;max-width:720px">
+        <input class="input" id="name" placeholder="Nama lengkap" required style="padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)">
+        <input class="input" id="email" type="email" placeholder="Email" required style="padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)">
+        <input class="input" id="phone" placeholder="Nomor HP (opsional)" style="padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)">
+        <textarea id="message" rows="5" placeholder="Ceritakan proyek singkat..." required style="padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)"></textarea>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn-primary" type="submit">Kirim Pesan</button>
+          <small id="formMsg" class="muted"></small>
+        </div>
+      </form>
+    </section>
+  `;
+  document.getElementById('contactForm').addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const msg = document.getElementById('formMsg');
+    msg.textContent = 'Mengirim...';
+    setTimeout(()=>{ msg.textContent = 'Terima kasih! Kami akan menghubungi Anda dalam 48 jam.'; e.target.reset(); },900);
+  });
+  revealAll();
+}
+
+function render404(){
+  document.getElementById('app').innerHTML = `<div class="card reveal"><h3>404 — Halaman tidak ditemukan</h3></div>`;
+  revealAll();
+}
+
+/* ========== ICONS (inline svg) ========== */
+function icon(name){
+  if(name==='speed') return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3c-1.657 0-3 1.567-3 3.5S10.343 10 12 10s3-1.567 3-3.5S13.657 3 12 3z" fill="currentColor" opacity="0.18"/><path d="M21 12c0-4.97-4.03-9-9-9S3 7.03 3 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if(name==='stars') return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor" opacity="0.12"/></svg>`;
+  if(name==='support') return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" fill="currentColor" opacity="0.08"/><path d="M8 14s1-1 4-1 4 1 4 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+  return '';
+}
+
+/* ========== THEME SWITCHER ========== */
+document.querySelectorAll('.tbtn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const t = b.getAttribute('data-theme');
+    if(t==='dark'){ document.body.setAttribute('data-theme',''); document.body.removeAttribute('data-theme'); document.body.style.background = ''; document.body.style.color = ''; document.body.dataset.theme = 'dark'; document.body.setAttribute('data-theme','dark'); }
+    else if(t==='light'){ document.body.setAttribute('data-theme','light'); }
+    else if(t==='colorful'){ document.body.setAttribute('data-theme','colorful'); }
+  });
+});
+
+/* ========== INIT ========== */
+window.addEventListener('hashchange', router);
+window.addEventListener('load', ()=>{
+  // attach nav links
+  document.querySelectorAll('nav a.navlink').forEach(a=>{
+    a.addEventListener('click', (e)=>{ e.preventDefault(); location.hash = a.getAttribute('data-route'); });
+  });
+  // initial route
+  if(!location.hash) location.hash = '/';
+  router();
+});
+</script>
+</body>
+</html>
